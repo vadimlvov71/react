@@ -1,0 +1,25 @@
+index:
+   path: /
+   controller: App\Controller\ShopController::index
+detailreact:
+   path: /{goods_translit}
+   controller: App\Controller\ShopController::detail
+users:
+   path: /users
+   controller: App\Controller\ShopController::detail
+shop:
+   path: /shop
+   controller: App\Controller\ShopController::index
+detail:
+   path: /shop/{goods_translit}
+   controller: App\Controller\ShopController::detail
+categories:
+   path: /shop/{category}
+   controller: App\Controller\ShopController::index
+#   controller: App\Controller\GoodsController::index
+# config/routes.yaml
+
+# the "app_lucky_number" route name is not important yet
+app_lucky_number:
+    path: /goods/{id}/edit
+    controller: App\Controller\GoodsController::edit
