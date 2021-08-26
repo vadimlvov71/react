@@ -15,7 +15,14 @@ class Goods extends Component {
     }
     componentDidUpdate(prevProps){
 		console.log(this.props.location.search);
-		this.getCategory();
+		console.log(this.props);
+		console.log(prevProps);
+		if (this.props.location.search !== prevProps.location.search) {
+			console.log('unequals');
+			this.getCategory();
+		}else{
+			console.log('equals');
+		}
 	}
 	getCategory(){
 		const uri = this.props.location.search;

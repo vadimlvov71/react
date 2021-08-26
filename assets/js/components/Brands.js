@@ -1,11 +1,15 @@
 import axios from "axios";
 import React from "react";
-
+import { useHistory } from "react-router-dom";
 const baseURL = "/api/brands";
 
 export default function Brands() {
-  const [brands, setBrand] = React.useState(null);
-
+	const history = useHistory();
+	const [brands, setBrand] = React.useState(null);
+	////////
+	const handleRoute = (brand_url) =>{ 
+		history.push("?brand=" + brand_url);
+	}
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
 		setBrand(response.data);
@@ -25,7 +29,7 @@ export default function Brands() {
 				<div className="shop__sidebar__categories">
 					<ul className="nice-scroll">
 						{ brands.map(brand =>
-							<li key={brand.id}><a href=''>{brand.name}</a></li>
+							<li key={brand.id}><a onClick={() => handleRoute(brand.url)}>{brand.name} {brand.url}</a></li>
 						)}
 					</ul>
 				</div>
