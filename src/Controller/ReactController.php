@@ -7,9 +7,11 @@ use Doctrine\ORM\Query;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use App\Entity\Categories;
 use App\Entity\Goods;
 use App\Entity\Brands;
+use App\Entity\Gallery;
  /**
 * @Route("/api", name="app_react_ip")
  */
@@ -149,7 +151,6 @@ class ReactController extends AbstractController
      */
     public function getBrands()
     {
-       
 		$query = $this->getDoctrine()
 			->getRepository(Brands::class)
 			->createQueryBuilder('b')
@@ -162,6 +163,66 @@ class ReactController extends AbstractController
         $response->headers->set('Access-Control-Allow-Origin', '*');
 
         $response->setContent(json_encode($brands));
+        
+        return $response;
+    }
+     /**
+     * @Route("/detail/{id}", name="detail")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getItem(Request $request): Response
+    {
+        $id = $request->get('id');
+        /*
+        $repository = $this->em->getRepository(Goods::class);
+
+        // look for a single Product by its primary key (usually "id")
+        $good = $repository->find($id);*/
+        ///
+        //$serializer->normalize->setIgnoredAttributes(array('category'));
+      /*  $entityAsArray = $serializer->normalize($good, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category']]);
+        return $this->render('goods/show.html.twig', [
+            'good' => $entityAsArray,
+        ]);*/
+       $query = $this->getDoctrine()
+			->getRepository(Goods::class)
+			->createQueryBuilder('g')
+			//->select('g.id', 'g.name', 'g.url')
+            ->where('g.id = :goodsId')
+            ->setParameters(array(':goodsId' => $id))
+			->getQuery();
+            $good = $query->getSingleResult(Query::HYDRATE_ARRAY);
+           // $good = $good[0];
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        $response->setContent(json_encode($good));
+        
+        return $response;
+    }
+     /**
+     * @Route("/gallery/{goods_id}", name="gallery")
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     */
+    public function getGallery(Request $request)
+    {
+        $goods_id = $request->get('goods_id');
+		$query = $this->getDoctrine()
+			->getRepository(Gallery::class)
+			->createQueryBuilder('g')
+			//->select('b.id', 'b.name', 'b.url')
+            ->where('g.goods_id = :goodsId')
+			->setParameters(array(':goodsId' => $goods_id))
+			->getQuery();
+		$gallery = $query->getResult(Query::HYDRATE_ARRAY);
+        $response = new Response();
+
+        $response->headers->set('Content-Type', 'application/json');
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+
+        $response->setContent(json_encode($gallery));
         
         return $response;
     }
