@@ -107,9 +107,6 @@ class ReactController extends AbstractController
 		//$query = $query->getQuery();
 		$goods = $query->getResult(Query::HYDRATE_ARRAY);
 		//////
-		/*echo "<pre>";
-		print_r($goods[0]);
-		echo "</pre>";*/
         $response = new Response();
 
         $response->headers->set('Content-Type', 'application/json');
@@ -174,26 +171,13 @@ class ReactController extends AbstractController
     {
         $id = $request->get('id');
         $goods_translit =  $request->get('goods_translit');
-        /*
-        $repository = $this->em->getRepository(Goods::class);
-
-        // look for a single Product by its primary key (usually "id")
-        $good = $repository->find($id);*/
-        ///
-        //$serializer->normalize->setIgnoredAttributes(array('category'));
-      /*  $entityAsArray = $serializer->normalize($good, null, [AbstractNormalizer::IGNORED_ATTRIBUTES => ['category']]);
-        return $this->render('goods/show.html.twig', [
-            'good' => $entityAsArray,
-        ]);*/
-       $query = $this->getDoctrine()
+        $query = $this->getDoctrine()
 			->getRepository(Goods::class)
 			->createQueryBuilder('g')
-			//->select('g.id', 'g.name', 'g.url')
             ->where('g.goods_translit = :goodsTranslit')
             ->setParameters(array(':goodsTranslit' => $goods_translit))
 			->getQuery();
             $good = $query->getSingleResult(Query::HYDRATE_ARRAY);
-           // $good = $good[0];
         $response = new Response();
 
         $response->headers->set('Content-Type', 'application/json');
@@ -213,7 +197,6 @@ class ReactController extends AbstractController
 		$query = $this->getDoctrine()
 			->getRepository(Gallery::class)
 			->createQueryBuilder('g')
-			//->select('b.id', 'b.name', 'b.url')
             ->where('g.goods_id = :goodsId')
 			->setParameters(array(':goodsId' => $goods_id))
 			->getQuery();
