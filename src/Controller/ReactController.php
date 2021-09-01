@@ -167,12 +167,13 @@ class ReactController extends AbstractController
         return $response;
     }
      /**
-     * @Route("/detail/{id}", name="detail")
+     * @Route("/detail/{goods_translit}", name="detail")
      * @return \Symfony\Component\HttpFoundation\JsonResponse
      */
     public function getItem(Request $request): Response
     {
         $id = $request->get('id');
+        $goods_translit =  $request->get('goods_translit');
         /*
         $repository = $this->em->getRepository(Goods::class);
 
@@ -188,8 +189,8 @@ class ReactController extends AbstractController
 			->getRepository(Goods::class)
 			->createQueryBuilder('g')
 			//->select('g.id', 'g.name', 'g.url')
-            ->where('g.id = :goodsId')
-            ->setParameters(array(':goodsId' => $id))
+            ->where('g.goods_translit = :goodsTranslit')
+            ->setParameters(array(':goodsTranslit' => $goods_translit))
 			->getQuery();
             $good = $query->getSingleResult(Query::HYDRATE_ARRAY);
            // $good = $good[0];
