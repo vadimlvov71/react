@@ -1,11 +1,12 @@
 import React, { useState } from "react"
 import axios from "axios";
-const baseURL = "/api/gallery/1";
+
 export default function Gallery({item}) {
     const [gallery, setGallery] = useState(null);
-    
 	////////
-	
+   // console.log("item.id:" + item.id);
+	const baseURL = "/api/gallery/" + item.id;
+    
 	React.useEffect(() => {
 		axios.get(baseURL).then((response) => {
 			setGallery(response.data);
@@ -18,7 +19,7 @@ export default function Gallery({item}) {
         <div className="col-lg-3 col-md-3">
             <ul className="nav nav-tabs" role="tablist">
                 {gallery.map(galleryItem =>
-                    <li key={galleryItem.id}>{galleryItem.name}</li>
+                    <li key={galleryItem.id}> <img src={window.location.origin + `/img/${galleryItem.img}`} alt="" /></li>
                 )}
             </ul>
         </div>

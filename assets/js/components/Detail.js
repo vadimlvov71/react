@@ -6,20 +6,21 @@ import Breadcrums from "./Breadcrums";
 import Gallery from "./Gallery";
 import Description from "./Description";
 import ItemBaseDetail from "./ItemBaseDetail";
+import { getUri } from './Helpers';
 
 class Detail extends Component {
     constructor(props) {
         super(props);
-        this.state = { item: null, loading: true};
-        this.uri = this.props.location.search;
-        console.log(window.location.href);
+        this.state = { item: null, loading: true};;
+        this.uri = getUri(window.location.href);
+        this.baseURL = "/api/detail/" + this.uri;
     }
     
     componentDidMount() {
         this.getitem();
     }
     getitem() {
-       axios.get("/api/detail/2").then(item => {
+       axios.get(this.baseURL).then(item => {
            this.setState({ item: item.data, loading: false})
        })
     }
@@ -42,9 +43,10 @@ class Detail extends Component {
                         <div>
                             <div className="product__details__pic">
                                 <div className="container">
-                                <Breadcrums/>
-                                    
-                                <Gallery item={item}/>
+
+                                    <Breadcrums item={item}/>
+                                        
+                                    <Gallery item={item}/>
                                    
                                 </div>
                             </div>
